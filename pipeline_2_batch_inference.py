@@ -45,16 +45,26 @@ def main():
     choice = input("Select option (1/2): ").strip()
     
     if choice == '1':
-        if not os.path.exists('stock_with_all_features.csv'):
-            print("Error: stock_with_all_features.csv not found.")
+        if os.path.exists('stock_with_all_features.csv'):
+            feature_file = 'stock_with_all_features.csv'
+            print("[Info] Using master dataset: stock_with_all_features.csv")
+            ticker_prompt = "Enter Stock Symbol (e.g., RELIANCE, TCS, GPIL): "
+        elif os.path.exists('inference_sample.csv'):
+            feature_file = 'inference_sample.csv'
+            print("[Info] Using included sample dataset: inference_sample.csv")
+            print("       Available sample stocks: GPIL, GPPL, GPTINFRA, GRANULES")
+            print("       (Place full 'stock_with_all_features.csv' in folder for all NSE/BSE stocks).")
+            ticker_prompt = "Enter Stock Symbol (e.g., GPIL, GPPL, GPTINFRA, GRANULES): "
+        else:
+            print("Error: Neither 'stock_with_all_features.csv' nor 'inference_sample.csv' found.")
             sys.exit(1)
             
-        ticker = input("Enter Stock Symbol (e.g., RELIANCE, TCS, AAPL): ").strip().replace('.NS', '')
-        print(f"Loading data for {ticker}...")
+        ticker = input(ticker_prompt).strip().replace('.NS', '')
+        print(f"Loading data for {ticker} from {feature_file}...")
         
-        # Slicing large CSV to find the ticker
+        # Slicing CSV to find the ticker
         chunks = []
-        for chunk in pd.read_csv('stock_with_all_features.csv', chunksize=100000, parse_dates=['Date']):
+        for chunk in pd.read_csv(feature_file, chunksize=100000, parse_dates=['Date']):
             stock_chunk = chunk[chunk['Stock'] == ticker]
             if not stock_chunk.empty:
                 chunks.append(stock_chunk)
@@ -165,9 +175,11 @@ def main():
             print(f"\n[Warning] Could not generate plots: {e}")
 
     elif choice == '2':
-        path = input("Enter full path to NEW CSV file for Batch Evaluation: ").strip()
+        path = input("Enter path to CSV for Batch Evaluation [Press Enter for 'inference_sample.csv']: ").strip()
+        if not path:
+            path = 'inference_sample.csv'
         if not os.path.exists(path):
-            print("File not found!")
+            print(f"File '{path}' not found!")
             sys.exit(1)
             
         print(f"Loading {path}...")

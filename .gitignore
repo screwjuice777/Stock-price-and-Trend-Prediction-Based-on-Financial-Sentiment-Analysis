@@ -44,8 +44,10 @@ stock_cleaned.csv
 stock_with_sentiment_features.csv
 stock_with_all_features.csv
 news_cleaned.csv
-news_with_finbert_sentiment_and_logits.csv
-indianfinancenews.csv
+
+# Allow core financial news and FinBERT sentiment datasets (< 25MB)
+!indianfinancenews.csv
+!news_with_finbert_sentiment_and_logits.csv
 
 # Keep sample evaluation & inference datasets
 !inference_sample.csv

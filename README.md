@@ -39,7 +39,10 @@ The project is organized into modular, automated pipelines:
 ├── lstm_model.keras                     # Pre-trained LSTM sequence model
 ├── xgb_model.json                       # Pre-trained XGBoost model
 ├── scaler.pkl                           # Fitted MinMaxScaler for technical & sentiment features
-├── inference_sample.csv                 # Ready-to-use sample dataset for batch prediction
+│
+├── indianfinancenews.csv                # Real Indian financial news headlines dataset
+├── news_with_finbert_sentiment_and_logits.csv # Pre-computed FinBERT sentiment scores & logits
+├── inference_sample.csv                 # Ready-to-use sample dataset for batch prediction & single stock test
 ├── batch_prediction_results.csv         # Sample inference predictions output
 │
 ├── plots/                               # Model performance visualizations & dashboards
@@ -58,11 +61,11 @@ The project is organized into modular, automated pipelines:
 
 ---
 
-## 🚀 Quick Start & Usage
+## 🚀 Quick Start & Usage (Try Out Right Away!)
+
+Anyone cloning this repository can immediately test the models without any setup or training required.
 
 ### 1. Installation
-
-Clone the repository and install the dependencies:
 
 ```bash
 git clone https://github.com/screwjuice777/Stock-price-and-Trend-Prediction-Based-on-Financial-Sentiment-Analysis.git
@@ -70,14 +73,22 @@ cd Stock-price-and-Trend-Prediction-Based-on-Financial-Sentiment-Analysis
 pip install -r requirements.txt
 ```
 
-### 2. Run Batch Inference (Using Pre-trained Models)
+### 2. Run Predictions & Dashboards
 
-You can immediately test the pre-trained models on sample stock data without needing to retrain:
+Launch the interactive prediction pipeline:
 
 ```bash
 python pipeline_2_batch_inference.py
 ```
-This loads `xgb_model.json`, `lstm_model.keras`, and `scaler.pkl`, runs batch inference over `inference_sample.csv`, and generates `batch_prediction_results.csv` with directional predictions.
+
+You have two ready-to-test modes:
+
+- **Option 1: Single Stock Forecast (Dashboard Mode)**
+  - Enter an included stock symbol (e.g. `GPIL`, `GPPL`, `GPTINFRA`, `GRANULES`).
+  - Generates the 3-day directional prediction (UP / DOWN), confidence percentage, hybrid ensemble voting logic, and saves a dark-mode price & sentiment visual chart in `plots/`!
+- **Option 2: Multi-Row Batch Evaluation**
+  - Simply press **Enter** to evaluate against `inference_sample.csv`.
+  - Computes predictions across thousands of records and saves results to `batch_prediction_results.csv`.
 
 ---
 
